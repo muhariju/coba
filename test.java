@@ -9,12 +9,14 @@ public class ShortestSubstring {
         Map<Character, Integer> charCount = new HashMap<>();
         int left = 0;
         int minLength = Integer.MAX_VALUE;
-        
+        boolean hasDuplicate = false;
+
         for (int right = 0; right < n; right++) {
             char rightChar = s.charAt(right);
             charCount.put(rightChar, charCount.getOrDefault(rightChar, 0) + 1);
-            
+
             while (hasDuplicate(charCount)) {
+                hasDuplicate = true;
                 minLength = Math.min(minLength, right - left + 1);
                 char leftChar = s.charAt(left);
                 charCount.put(leftChar, charCount.get(leftChar) - 1);
@@ -24,10 +26,10 @@ public class ShortestSubstring {
                 left++;
             }
         }
-        
-        return minLength == Integer.MAX_VALUE ? 0 : minLength;
+
+        return hasDuplicate ? minLength : 0;
     }
-    
+
     private static boolean hasDuplicate(Map<Character, Integer> charCount) {
         for (int count : charCount.values()) {
             if (count > 1) {
